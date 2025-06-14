@@ -38,7 +38,7 @@ Este proyecto consiste en un sistema de consola que permite crear y gestionar m�
    ```
 3.Interactúa con el menú de forma intuitiva.
 
-##Estructura de archivos
+## Estructura de archivos
 
 Todo el código está contenido en un único archivo llamado:
 
