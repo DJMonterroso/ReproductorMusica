@@ -36,8 +36,10 @@ public class ReproductorMusica {
                     }
                 }
                 case 5 -> {
-                    // eliminarCancion();
-                    esperarEnter();
+                    if (confirmarAccion("¿Desea eliminar una canción por título?")) {
+                        eliminarCancion();
+                        esperarEnter();
+                    }
                 }
                 case 6 -> {
                     limpiarPantalla();
@@ -138,6 +140,21 @@ public class ReproductorMusica {
         System.out.print("Ingrese el título de la canción a buscar: ");
         String titulo = scanner.nextLine().trim();
         seleccionada.canciones.buscarPorTitulo(titulo);
+    }
+
+    private static void eliminarCancion() {
+        listaPlaylists.mostrarPlaylists();
+        System.out.print("Ingrese el nombre de la playlist: ");
+        String nombre = scanner.nextLine().trim();
+        Playlist seleccionada = listaPlaylists.buscarPlaylist(nombre);
+        if (seleccionada == null) {
+            System.out.println("Playlist no encontrada.");
+            return;
+        }
+
+        System.out.print("Ingrese el título de la canción a eliminar: ");
+        String titulo = scanner.nextLine().trim();
+        seleccionada.canciones.eliminarPorTitulo(titulo);
     }
 
     private static int leerEntero(String mensaje) {
@@ -249,6 +266,31 @@ class ListaCanciones {
             actual = actual.siguiente;
         }
         System.out.println("No se encontró una canción con ese título.");
+    }
+
+    public void eliminarPorTitulo(String titulo) {
+        if (inicio == null) {
+            System.out.println("La playlist está vacía.");
+            return;
+        }
+
+        if (inicio.cancion.titulo.equalsIgnoreCase(titulo)) {
+            inicio = inicio.siguiente;
+            System.out.println("Canción eliminada correctamente.");
+            return;
+        }
+
+        NodoCancion actual = inicio;
+        while (actual.siguiente != null && !actual.siguiente.cancion.titulo.equalsIgnoreCase(titulo)) {
+            actual = actual.siguiente;
+        }
+
+        if (actual.siguiente == null) {
+            System.out.println("No se encontró una canción con ese título.");
+        } else {
+            actual.siguiente = actual.siguiente.siguiente;
+            System.out.println("Canción eliminada correctamente.");
+        }
     }
 }
 
