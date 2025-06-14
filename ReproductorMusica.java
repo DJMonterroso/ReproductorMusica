@@ -24,15 +24,19 @@ public class ReproductorMusica {
                     }
                 }
                 case 3 -> {
-                    
-                    esperarEnter();
+                    if (confirmarAccion("¿Desea mostrar canciones de una playlist?")) {
+                        mostrarCanciones();
+                        esperarEnter();
+                    }
                 }
                 case 4 -> {
-                   
-                    esperarEnter();
+                    if (confirmarAccion("¿Desea buscar una canción por título?")) {
+                        buscarCancion();
+                        esperarEnter();
+                    }
                 }
                 case 5 -> {
-
+                    // eliminarCancion();
                     esperarEnter();
                 }
                 case 6 -> {
@@ -109,6 +113,33 @@ public class ReproductorMusica {
         seleccionada.canciones.agregarCancion(nueva);
     }
 
+    private static void mostrarCanciones() {
+        listaPlaylists.mostrarPlaylists();
+        System.out.print("Ingrese el nombre de la playlist: ");
+        String nombre = scanner.nextLine().trim();
+        Playlist seleccionada = listaPlaylists.buscarPlaylist(nombre);
+        if (seleccionada == null) {
+            System.out.println("Playlist no encontrada.");
+            return;
+        }
+        seleccionada.canciones.mostrarCanciones();
+    }
+
+    private static void buscarCancion() {
+        listaPlaylists.mostrarPlaylists();
+        System.out.print("Ingrese el nombre de la playlist: ");
+        String nombre = scanner.nextLine().trim();
+        Playlist seleccionada = listaPlaylists.buscarPlaylist(nombre);
+        if (seleccionada == null) {
+            System.out.println("Playlist no encontrada.");
+            return;
+        }
+
+        System.out.print("Ingrese el título de la canción a buscar: ");
+        String titulo = scanner.nextLine().trim();
+        seleccionada.canciones.buscarPorTitulo(titulo);
+    }
+
     private static int leerEntero(String mensaje) {
         while (true) {
             try {
@@ -141,6 +172,10 @@ public class ReproductorMusica {
         scanner.nextLine();
     }
 }
+
+// =========================
+// CLASES DE SOPORTE
+// =========================
 
 class Cancion {
     String titulo;
@@ -179,6 +214,41 @@ class ListaCanciones {
             actual.siguiente = nuevo;
         }
         System.out.println("Canción agregada correctamente.");
+    }
+
+    public void mostrarCanciones() {
+        if (inicio == null) {
+            System.out.println("La playlist está vacía.");
+            return;
+        }
+        NodoCancion actual = inicio;
+        System.out.println("\nCANCIONES EN LA PLAYLIST:");
+        while (actual != null) {
+            System.out.println("---------------------------");
+            System.out.println("Título: " + actual.cancion.titulo);
+            System.out.println("Artista: " + actual.cancion.artista);
+            System.out.println("Duración: " + actual.cancion.duracion + " segundos");
+            actual = actual.siguiente;
+        }
+    }
+
+    public void buscarPorTitulo(String titulo) {
+        if (inicio == null) {
+            System.out.println("La playlist está vacía.");
+            return;
+        }
+        NodoCancion actual = inicio;
+        while (actual != null) {
+            if (actual.cancion.titulo.equalsIgnoreCase(titulo)) {
+                System.out.println("\nCANCION ENCONTRADA:");
+                System.out.println("Título: " + actual.cancion.titulo);
+                System.out.println("Artista: " + actual.cancion.artista);
+                System.out.println("Duración: " + actual.cancion.duracion + " segundos");
+                return;
+            }
+            actual = actual.siguiente;
+        }
+        System.out.println("No se encontró una canción con ese título.");
     }
 }
 
