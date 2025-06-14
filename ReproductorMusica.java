@@ -12,33 +12,53 @@ public class ReproductorMusica {
             opcion = leerEntero("\nSeleccione una opción: ");
             switch (opcion) {
                 case 1 -> {
+                    limpiarPantalla();
                     if (confirmarAccion("¿Desea crear una nueva playlist?")) {
-                        crearPlaylist();
-                        esperarEnter();
+                        do {
+                            limpiarPantalla();
+                            crearPlaylist();
+                            esperarEnter();
+                        } while (preguntarRepetir("¿Desea crear otra playlist?"));
                     }
                 }
                 case 2 -> {
+                    limpiarPantalla();
                     if (confirmarAccion("¿Desea agregar una canción a una playlist?")) {
-                        agregarCancion();
-                        esperarEnter();
+                        do {
+                            limpiarPantalla();
+                            agregarCancion();
+                            esperarEnter();
+                        } while (preguntarRepetir("¿Desea agregar otra canción?"));
                     }
                 }
                 case 3 -> {
+                    limpiarPantalla();
                     if (confirmarAccion("¿Desea mostrar canciones de una playlist?")) {
-                        mostrarCanciones();
-                        esperarEnter();
+                        do {
+                            limpiarPantalla();
+                            mostrarCanciones();
+                            esperarEnter();
+                        } while (preguntarRepetir("¿Desea mostrar otra playlist?"));
                     }
                 }
                 case 4 -> {
+                    limpiarPantalla();
                     if (confirmarAccion("¿Desea buscar una canción por título?")) {
-                        buscarCancion();
-                        esperarEnter();
+                        do {
+                            limpiarPantalla();
+                            buscarCancion();
+                            esperarEnter();
+                        } while (preguntarRepetir("¿Desea hacer otra búsqueda?"));
                     }
                 }
                 case 5 -> {
+                    limpiarPantalla();
                     if (confirmarAccion("¿Desea eliminar una canción por título?")) {
-                        eliminarCancion();
-                        esperarEnter();
+                        do {
+                            limpiarPantalla();
+                            eliminarCancion();
+                            esperarEnter();
+                        } while (preguntarRepetir("¿Desea eliminar otra canción?"));
                     }
                 }
                 case 6 -> {
@@ -169,6 +189,17 @@ public class ReproductorMusica {
     }
 
     private static boolean confirmarAccion(String mensaje) {
+        String respuesta;
+        while (true) {
+            System.out.print(mensaje + " (S/N): ");
+            respuesta = scanner.nextLine().trim().toLowerCase();
+            if (respuesta.equals("s")) return true;
+            if (respuesta.equals("n")) return false;
+            System.out.println("Respuesta inválida. Ingrese S o N.");
+        }
+    }
+
+    private static boolean preguntarRepetir(String mensaje) {
         String respuesta;
         while (true) {
             System.out.print(mensaje + " (S/N): ");
