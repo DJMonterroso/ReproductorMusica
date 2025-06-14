@@ -87,12 +87,7 @@ public class ReproductorMusica {
     }
 
     private static void crearPlaylist() {
-        System.out.print("Ingrese el nombre de la nueva playlist: ");
-        String nombre = scanner.nextLine().trim();
-        if (nombre.isEmpty()) {
-            System.out.println("El nombre no puede estar vacío.");
-            return;
-        }
+        String nombre = leerTextoSoloLetras("Ingrese el nombre de la nueva playlist: ");
         if (listaPlaylists.buscarPlaylist(nombre) != null) {
             System.out.println("Ya existe una playlist con ese nombre.");
             return;
@@ -103,28 +98,15 @@ public class ReproductorMusica {
 
     private static void agregarCancion() {
         listaPlaylists.mostrarPlaylists();
-        System.out.print("Ingrese el nombre de la playlist: ");
-        String nombre = scanner.nextLine().trim();
+        String nombre = leerTextoSoloLetras("Ingrese el nombre de la playlist: ");
         Playlist seleccionada = listaPlaylists.buscarPlaylist(nombre);
         if (seleccionada == null) {
             System.out.println("Playlist no encontrada.");
             return;
         }
 
-        System.out.print("Ingrese el título de la canción: ");
-        String titulo = scanner.nextLine().trim();
-        if (titulo.isEmpty()) {
-            System.out.println("El título no puede estar vacío.");
-            return;
-        }
-
-        System.out.print("Ingrese el artista: ");
-        String artista = scanner.nextLine().trim();
-        if (artista.isEmpty()) {
-            System.out.println("El artista no puede estar vacío.");
-            return;
-        }
-
+        String titulo = leerTextoSoloLetras("Ingrese el título de la canción: ");
+        String artista = leerTextoSoloLetras("Ingrese el artista: ");
         int duracion = leerEntero("Ingrese la duración (segundos): ");
         if (duracion <= 0) {
             System.out.println("La duración debe ser mayor a cero.");
@@ -137,8 +119,7 @@ public class ReproductorMusica {
 
     private static void mostrarCanciones() {
         listaPlaylists.mostrarPlaylists();
-        System.out.print("Ingrese el nombre de la playlist: ");
-        String nombre = scanner.nextLine().trim();
+        String nombre = leerTextoSoloLetras("Ingrese el nombre de la playlist: ");
         Playlist seleccionada = listaPlaylists.buscarPlaylist(nombre);
         if (seleccionada == null) {
             System.out.println("Playlist no encontrada.");
@@ -149,31 +130,27 @@ public class ReproductorMusica {
 
     private static void buscarCancion() {
         listaPlaylists.mostrarPlaylists();
-        System.out.print("Ingrese el nombre de la playlist: ");
-        String nombre = scanner.nextLine().trim();
+        String nombre = leerTextoSoloLetras("Ingrese el nombre de la playlist: ");
         Playlist seleccionada = listaPlaylists.buscarPlaylist(nombre);
         if (seleccionada == null) {
             System.out.println("Playlist no encontrada.");
             return;
         }
 
-        System.out.print("Ingrese el título de la canción a buscar: ");
-        String titulo = scanner.nextLine().trim();
+        String titulo = leerTextoSoloLetras("Ingrese el título de la canción a buscar: ");
         seleccionada.canciones.buscarPorTitulo(titulo);
     }
 
     private static void eliminarCancion() {
         listaPlaylists.mostrarPlaylists();
-        System.out.print("Ingrese el nombre de la playlist: ");
-        String nombre = scanner.nextLine().trim();
+        String nombre = leerTextoSoloLetras("Ingrese el nombre de la playlist: ");
         Playlist seleccionada = listaPlaylists.buscarPlaylist(nombre);
         if (seleccionada == null) {
             System.out.println("Playlist no encontrada.");
             return;
         }
 
-        System.out.print("Ingrese el título de la canción a eliminar: ");
-        String titulo = scanner.nextLine().trim();
+        String titulo = leerTextoSoloLetras("Ingrese el título de la canción a eliminar: ");
         seleccionada.canciones.eliminarPorTitulo(titulo);
     }
 
@@ -185,6 +162,17 @@ public class ReproductorMusica {
             } catch (NumberFormatException e) {
                 System.out.println("Ingrese un número válido.");
             }
+        }
+    }
+
+    private static String leerTextoSoloLetras(String mensaje) {
+        while (true) {
+            System.out.print(mensaje);
+            String texto = scanner.nextLine().trim();
+            if (texto.matches("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+") && !texto.isBlank()) {
+                return texto.replaceAll(" +", " ").trim();
+            }
+            System.out.println("Entrada inválida. Use solo letras y espacios.");
         }
     }
 
@@ -220,11 +208,6 @@ public class ReproductorMusica {
         scanner.nextLine();
     }
 }
-
-// =========================
-// CLASES DE SOPORTE
-// =========================
-
 class Cancion {
     String titulo;
     String artista;
